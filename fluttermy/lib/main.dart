@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'Column.dart';
+import 'Container.dart';
+import 'calculator.dart';
+import 'StopWatch.dart';
+
 
 void main() {
   runApp(const MainApp());
@@ -10,11 +15,16 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('hello world how are you'),
-        ),
-      ),
-    );
+        debugShowCheckedModeBanner: false, home: StopwatchExperiemnt()
+        // home: CalculatorPart()
+        // home: ColumnExperiment(),
+        // home: CustomContainer(),
+        // home: Scaffold(
+        //   body: CustomContainer(),
+        //   // body: Center(
+        //   //   child: Text('3456789'),
+        //   // ),
+        // ),
+        );
   }
 }
