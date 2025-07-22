@@ -1,3 +1,4 @@
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 
@@ -11,17 +12,50 @@ class StopwatchExperiemnt extends StatefulWidget {
 class _StopwatchExperiemntState extends State<StopwatchExperiemnt> {
   int seconds = 0;
   late Timer timer;
+  String _secondtoText() => seconds <= 1 ? 'Second' : 'Seconds';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Stopwatch Experiment'),
         ),
-        body: Center(
-          child: Text(
-            '$seconds Seconds',
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Center(
+              child: Text(
+                '$seconds ${_secondtoText()}',
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: null,
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(Colors.green),
+                    foregroundColor: MaterialStatePropertyAll(Colors.white),
+                  ),
+                  child: Text("Start"),
+                ),
+                SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: null,
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(Colors.red),
+                    foregroundColor: MaterialStatePropertyAll(Colors.white),
+                  ),
+                  child: Text("Stop"),
+                ),
+              ],
+            ),
+          ],
         ));
   }
 
