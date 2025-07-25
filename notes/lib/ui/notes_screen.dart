@@ -1,0 +1,107 @@
+import 'package:flutter/material.dart';
+import 'note.dart';
+
+class NotesScreen extends StatefulWidget {
+  const NotesScreen({super.key});
+
+  @override
+  State<NotesScreen> createState() => _NotesScreenState();
+}
+
+class _NotesScreenState extends State<NotesScreen> {
+  TextEditingController txt = TextEditingController();
+  TextEditingController diss = TextEditingController();
+
+  // ✅ Move notes list here — it becomes persistent state
+  List<Note> notes = [];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("App Bar", style: TextStyle(color: Colors.black)),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Title input
+            TextField(
+              decoration: InputDecoration(
+                hintText: "Enter Text",
+                labelText: "Title",
+              ),
+              controller: txt,
+            ),
+
+            SizedBox(height: 10),
+
+            // Description input
+            TextField(
+              decoration: InputDecoration(
+                hintText: "Enter Description",
+                labelText: "Description",
+              ),
+              controller: diss,
+            ),
+
+            SizedBox(height: 10),
+
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                foregroundColor: Colors.white,
+              ),
+              onPressed: () {
+                if (txt.text.isNotEmpty && diss.text.isNotEmpty) {
+                  setState(() {
+                    notes.add(
+                      Note(
+                        id: DateTime.now().toIso8601String(),
+                        tx: txt.text,
+                        dec: diss.text,
+                      ),
+                    );
+                    // Clear input fields after adding
+                    txt.clear();
+                    diss.clear();
+                  });
+                }
+              },
+              child: Text("Submit"),
+            ),
+
+            SizedBox(height: 30),
+            Center(child: Text("List View", style: TextStyle(fontSize: 30))),
+            // List view of notes
+            Expanded(
+              child: ListView.builder(
+                itemCount: notes.length,
+                itemBuilder: (context, index) => ListTile(
+                  title: Text(notes[index].tx),
+                  subtitle: Text(notes[index].dec),
+                  trailing: ElevatedButton(
+                    child: Icon(Icons.delete),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      foregroundColor: Colors.red,
+                      elevation: 0,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        notes.removeAt(
+                          index,
+                        ); // Delete the note of the perticulet
+                      });
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
