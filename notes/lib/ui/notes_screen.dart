@@ -12,14 +12,14 @@ class _NotesScreenState extends State<NotesScreen> {
   TextEditingController txt = TextEditingController();
   TextEditingController diss = TextEditingController();
 
-  // ✅ Move notes list here — it becomes persistent state
   List<Note> notes = [];
+  int? editingIndex; // <-- Track the index being edited
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("App Bar", style: TextStyle(color: Colors.black)),
+        title: Text("Notes App", style: TextStyle(color: Colors.black)),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -29,7 +29,7 @@ class _NotesScreenState extends State<NotesScreen> {
             // Title input
             TextField(
               decoration: InputDecoration(
-                hintText: "Enter Text",
+                hintText: "Enter Title",
                 labelText: "Title",
               ),
               controller: txt,
@@ -48,6 +48,7 @@ class _NotesScreenState extends State<NotesScreen> {
 
             SizedBox(height: 10),
 
+            // Submit / Update button
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
@@ -56,24 +57,36 @@ class _NotesScreenState extends State<NotesScreen> {
               onPressed: () {
                 if (txt.text.isNotEmpty && diss.text.isNotEmpty) {
                   setState(() {
-                    notes.add(
-                      Note(
-                        id: DateTime.now().toIso8601String(),
+                    if (editingIndex == null) {
+                      // Add new note
+                      notes.add(
+                        Note(
+                          id: DateTime.now().toIso8601String(),
+                          tx: txt.text,
+                          dec: diss.text,
+                        ),
+                      );
+                    } else {
+                      // Update existing note
+                      notes[editingIndex!] = Note(
+                        id: notes[editingIndex!].id, // keep same ID
                         tx: txt.text,
                         dec: diss.text,
-                      ),
-                    );
-                    // Clear input fields after adding
+                      );
+                      editingIndex = null; // reset
+                    }
+
                     txt.clear();
                     diss.clear();
                   });
                 }
               },
-              child: Text("Submit"),
+              child: Text(editingIndex == null ? "Submit" : "Update"),
             ),
 
             SizedBox(height: 30),
             Center(child: Text("List View", style: TextStyle(fontSize: 30))),
+
             // List view of notes
             Expanded(
               child: ListView.builder(
@@ -81,20 +94,36 @@ class _NotesScreenState extends State<NotesScreen> {
                 itemBuilder: (context, index) => ListTile(
                   title: Text(notes[index].tx),
                   subtitle: Text(notes[index].dec),
-                  trailing: ElevatedButton(
-                    child: Icon(Icons.delete),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.transparent,
-                      foregroundColor: Colors.red,
-                      elevation: 0,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        notes.removeAt(
-                          index,
-                        ); // Delete the note of the perticulet
-                      });
-                    },
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Edit Button
+                      IconButton(
+                        icon: Icon(Icons.edit, color: Colors.green),
+                        onPressed: () {
+                          setState(() {
+                            txt.text = notes[index].tx;
+                            diss.text = notes[index].dec;
+                            editingIndex = index;
+                          });
+                        },
+                      ),
+                      // Delete Button
+                      IconButton(
+                        icon: Icon(Icons.delete, color: Colors.red),
+                        onPressed: () {
+                          setState(() {
+                            notes.removeAt(index);
+                            if (editingIndex == index) {
+                              // Cancel editing if the edited item is deleted
+                              editingIndex = null;
+                              txt.clear();
+                              diss.clear();
+                            }
+                          });
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ),
