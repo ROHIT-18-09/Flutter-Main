@@ -99,7 +99,7 @@ class _NotesScreenState extends State<NotesScreen> {
                     children: [
                       // Edit Button
                       IconButton(
-                        icon: Icon(Icons.edit, color: Colors.green),
+                        icon: Icon(Icons.edit, color: const Color.fromARGB(255, 133, 229, 104)),
                         onPressed: () {
                           setState(() {
                             txt.text = notes[index].tx;
@@ -110,7 +110,7 @@ class _NotesScreenState extends State<NotesScreen> {
                       ),
                       // Delete Button
                       IconButton(
-                        icon: Icon(Icons.delete, color: Colors.red),
+                        icon: Icon(Icons.delete, color: const Color.fromARGB(255, 253, 60, 46)),
                         onPressed: () {
                           setState(() {
                             notes.removeAt(index);
