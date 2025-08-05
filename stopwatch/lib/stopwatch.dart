@@ -19,25 +19,24 @@ class _StopwatchExperiemntState extends State<StopwatchExperiemnt> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.name),
-        ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Center(
-                child: Text(
-                  '$seconds ${_secondtoText()}',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
+      appBar: AppBar(title: Text(widget.name)),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: Center(
+              child: Text(
+                '$seconds ${_secondtoText()}',
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
             ),
-            Expanded(child: controlPanel()),
-            Expanded(child: _builderDisplay()),
-          ],
-        ));
+          ),
+          Expanded(child: controlPanel()),
+          Expanded(child: _builderDisplay()),
+        ],
+      ),
+    );
   }
 
   Row controlPanel() {
@@ -89,7 +88,7 @@ class _StopwatchExperiemntState extends State<StopwatchExperiemnt> {
     });
   }
 
-// final laps = <int>[];
+  // final laps = <int>[];
   void _lapClick() {
     if (isTicking) {
       setState(() {
