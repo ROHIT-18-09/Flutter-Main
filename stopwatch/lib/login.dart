@@ -64,6 +64,10 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 30,
             ),
             ElevatedButton(
+              style: const ButtonStyle(
+                backgroundColor: MaterialStatePropertyAll(Color.fromARGB(255, 152, 188, 74)),
+                foregroundColor: MaterialStatePropertyAll(Colors.white),
+              ),
               onPressed: _validateInput,
               child: Text("Login "),
             ),
